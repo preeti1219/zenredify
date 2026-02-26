@@ -1,0 +1,66 @@
+<div class="container mt-4">
+
+    <!-- Search -->
+    <input
+      type="text"
+      class="form-control mb-3"
+      [placeholder]="UI_TEXT.SEARCH_PLACEHOLDER"
+      [ngModel]="searchQuery()"
+      (ngModelChange)="onSearch($event)"
+    />
+  
+    <!-- Genre Radio -->
+    <div class="mb-4">
+      @for (genre of genreOptions; track genre.value) {
+        <label class="me-3">
+          <input
+            type="radio"
+            name="genre"
+            [value]="genre.value"
+            [checked]="selectedGenre() === genre.value"
+            (change)="onGenreChange(genre.value)"
+          />
+          {{ genre.label }}
+        </label>
+      }
+    </div>
+  
+    @if (searchQuery() || selectedGenre()) {
+      <button
+        class="btn btn-outline-secondary mb-4"
+        (click)="clearFilters()">
+        {{ UI_TEXT.CLEAR_FILTERS }}
+      </button>
+    }
+  
+    <!-- BEST SELLERS -->
+    <h4 class="mb-3">{{ UI_TEXT.BEST_SELLERS }}</h4>
+    <div class="row mb-4">
+      @for (book of bestSellers(); track book.id) {
+        <div class="col-md-3">
+          <app-book-card [book]="book"></app-book-card>
+        </div>
+      }
+    </div>
+  
+    <!-- NEW ARRIVALS -->
+    <h4 class="mb-3">{{ UI_TEXT.NEW_ARRIVALS }}</h4>
+    <div class="row mb-4">
+      @for (book of newArrivals(); track book.id) {
+        <div class="col-md-3">
+          <app-book-card [book]="book"></app-book-card>
+        </div>
+      }
+    </div>
+  
+    <!-- EDITOR PICKS -->
+    <h4 class="mb-3">{{ UI_TEXT.EDITORS_PICK }}</h4>
+    <div class="row mb-5">
+      @for (book of editorsPick(); track book.id) {
+        <div class="col-md-3">
+          <app-book-card [book]="book"></app-book-card>
+        </div>
+      }
+    </div>
+  
+  </div>

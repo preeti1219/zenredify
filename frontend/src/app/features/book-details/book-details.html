@@ -1,0 +1,83 @@
+<div class="container mt-4" *ngIf="book() as b">
+
+    <!-- Book Info -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <img [src]="b.imageUrl" class="img-fluid rounded shadow" />
+      </div>
+  
+      <div class="col-md-8">
+        <h2>{{ b.title }}</h2>
+        <h5 class="text-muted">by {{ b.author }}</h5>
+        <p class="badge bg-secondary">{{ b.genre }}</p>
+      </div>
+    </div>
+  
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <button
+          class="nav-link"
+          [class.active]="activeTab() === 'description'"
+          (click)="switchTab('description')">
+          Description
+        </button>
+      </li>
+      <li class="nav-item">
+        <button
+          class="nav-link"
+          [class.active]="activeTab() === 'reviews'"
+          (click)="switchTab('reviews')">
+          Reviews
+        </button>
+      </li>
+    </ul>
+  
+    <!-- Description Tab -->
+    <div *ngIf="activeTab() === 'description'">
+      <p>{{ b.description }}</p>
+    </div>
+  
+    <!-- Reviews Tab -->
+    <div *ngIf="activeTab() === 'reviews'">
+  
+      <!-- Existing Reviews -->
+      <div *ngIf="reviews().length > 0; else noReviews">
+        <div class="card mb-3" *ngFor="let r of reviews()">
+          <div class="card-body">
+            <p>{{ r.reviewText }}</p>
+            <small>⭐ {{ r.rating }}/5</small>
+          </div>
+        </div>
+      </div>
+  
+      <ng-template #noReviews>
+        <p class="text-muted">No reviews yet.</p>
+      </ng-template>
+  
+      <!-- Add Review -->
+      <div class="card mt-4 p-3 shadow-sm">
+        <h5>Add Review</h5>
+        <textarea
+          class="form-control mb-2"
+          rows="3"
+          [ngModel]="newReviewText()"
+          (ngModelChange)="newReviewText.set($event)"
+          placeholder="Write your review...">
+        </textarea>
+  
+        <label class="mb-2">Rating</label>
+        <select class="form-select mb-3" [ngModel]="newRating()" (ngModelChange)="newRating.set($event)">
+          <option *ngFor="let r of [1,2,3,4,5]" [value]="r">
+            {{ r }}
+          </option>
+        </select>
+  
+        <button class="btn btn-dark" (click)="submitReview()">
+          Submit Review
+        </button>
+      </div>
+  
+    </div>
+  
+  </div>
